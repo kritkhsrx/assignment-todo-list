@@ -25,3 +25,16 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Flutter related
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/local.properties
+
+# FVM related
+.fvm/
+fvm_config.json

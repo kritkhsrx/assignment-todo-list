@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+
+    {
+      "type": "dart",
+      "request": "launch",
+      "name": "Launch Flutter App",
+      "program": "${workspaceFolder}/lib/main.dart", // Default entry point
+      "cwd": "${workspaceFolder}",
+      "deviceId": "${command:dart.promptForDevice}",
+      "console": "debugConsole",
+      "enableAsserts": true,
+      "flutterMode": "debug" // Options: debug, profile, release
+    }
+  ]
+}
