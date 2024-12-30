@@ -7,8 +7,8 @@ class WelcomeConstants {
 }
 
 class ProgressConstants {
-  static const active = 'Active';
-  static const done = 'Done';
+  static const active = 'acitve';
+  static const done = 'done';
   static const pendingTitle = 'Pending';
   static const doneTitle = 'Completed';
   static const taskLabel = 'TASKS';
