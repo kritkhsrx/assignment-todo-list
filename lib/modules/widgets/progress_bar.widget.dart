@@ -17,7 +17,6 @@ class ProgressBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     double progress = totalTask > 0 ? numberOfTask / totalTask.toDouble() : 0.0;
-
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         double columnWidth = constraints.maxWidth;

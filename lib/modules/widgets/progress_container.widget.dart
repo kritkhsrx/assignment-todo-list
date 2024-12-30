@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/constants.dart';
 import 'package:todo_list/modules/widgets/progress_bar.widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list/bloc/todo_list/todo_bloc.dart';
 
 class ProgressCardWidget extends StatefulWidget {
   const ProgressCardWidget({super.key});
@@ -14,29 +16,37 @@ class ProgressCardWidget extends StatefulWidget {
 class _ProgressCardWidgetState extends State<ProgressCardWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(0.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(
-            child: ProgressContainer(
-              text: ProgressConstants.pendingTitle,
-              status: ProgressConstants.active,
-              totalTask: 5,
-              numberOfTask: 3,
-            ),
-          ),
-          SizedBox(width: 26),
-          Expanded(
-            child: ProgressContainer(
-              text: ProgressConstants.doneTitle,
-              status: ProgressConstants.done,
-              totalTask: 5,
-              numberOfTask: 2,
-            ),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(0.0),
+      child: BlocBuilder<TodoBloc, TodoState>(
+        builder: (context, state) {
+          if (state is TodoLoaded) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  child: ProgressContainer(
+                    text: ProgressConstants.pendingTitle,
+                    status: ProgressConstants.active,
+                    totalTask: state.totalTask,
+                    numberOfTask: state.numberOfActiveTask,
+                  ),
+                ),
+                const SizedBox(width: 26),
+                Expanded(
+                  child: ProgressContainer(
+                    text: ProgressConstants.doneTitle,
+                    status: ProgressConstants.done,
+                    totalTask: state.totalTask,
+                    numberOfTask: state.numberOfDoneTask,
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const Center(child: Text('Failed to load tasks.'));
+          }
+        },
       ),
     );
   }
@@ -87,7 +97,7 @@ class ProgressContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '$totalTask ${ProgressConstants.taskLabel}',
+            '${numberOfTask} ${ProgressConstants.taskLabel}',
             style: const TextStyle(
               color: Color(0xFF858585),
               fontWeight: FontWeight.w600,

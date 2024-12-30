@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list/constants.dart';
+import 'package:todo_list/bloc/todo_list/todo_bloc.dart';
 
 class TaskItem extends StatelessWidget {
   final String title;
   final String description;
   final DateTime createdAt;
   final String status;
+  final int index;
 
   const TaskItem({
     super.key,
@@ -13,6 +16,7 @@ class TaskItem extends StatelessWidget {
     required this.description,
     required this.createdAt,
     required this.status,
+    required this.index,
   });
 
   @override
@@ -35,19 +39,28 @@ class TaskItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              status == ProgressConstants.done
-                  ? Icons.check_circle
-                  : Icons.circle_outlined,
-              color: status == ProgressConstants.done
-                  ? ColorConstants.secondaryColor
-                  : ColorConstants.primaryColor,
-              size: 40,
+          GestureDetector(
+            onTap: () {
+              context.read<TodoBloc>().add(UpdateTodoStatusEvent(
+                  index,
+                  status == ProgressConstants.done
+                      ? ProgressConstants.active
+                      : ProgressConstants.done));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                status == ProgressConstants.done
+                    ? Icons.check_circle
+                    : Icons.circle_outlined,
+                color: status == ProgressConstants.done
+                    ? ColorConstants.secondaryColor
+                    : ColorConstants.primaryColor,
+                size: 40,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -59,23 +72,26 @@ class TaskItem extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: status == ProgressConstants.done
+                        ? Colors.grey
+                        : Colors.black,
                     decoration: status == ProgressConstants.done
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   description,
                   style: TextStyle(
+                    fontSize: 14,
                     color: Colors.grey,
-                    fontSize: 12,
                     decoration: status == ProgressConstants.done
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
