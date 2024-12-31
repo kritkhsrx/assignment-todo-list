@@ -49,16 +49,16 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 class TaskSorter {
   static void sortTasks(List<Map<String, dynamic>> taskItems) {
     taskItems.sort((a, b) {
-      const statusPriority = {
-        ProgressConstants.active: 1,
-        ProgressConstants.done: 2,
-      };
-      final statusA = statusPriority[a['status']]!;
-      final statusB = statusPriority[b['status']]!;
+      // const statusPriority = {
+      //   ProgressConstants.active: 1,
+      //   ProgressConstants.done: 2,
+      // };
+      // final statusA = statusPriority[a['status']]!;
+      // final statusB = statusPriority[b['status']]!;
 
-      if (statusA != statusB) {
-        return statusA.compareTo(statusB);
-      }
+      // if (statusA != statusB) {
+      //   return statusA.compareTo(statusB);
+      // }
       final dateA = DateTime.parse(a['createdAt']);
       final dateB = DateTime.parse(b['createdAt']);
       return dateB.compareTo(dateA);
