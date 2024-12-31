@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/constants.dart';
 import 'package:todo_list/modules/widgets/task_item.widget.dart';
 
 class TaskListWidget extends StatelessWidget {
