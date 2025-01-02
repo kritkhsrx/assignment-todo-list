@@ -69,15 +69,20 @@ class TodoListView extends StatelessWidget {
     if (state is TodoLoading || state is TodoInitial) {
       return const SizedBox.shrink();
     } else {
-      return Material(
-        elevation: 8.0,
-        shape: const CircleBorder(),
-        shadowColor: const Color(0xFF0575F3).withOpacity(0.42),
-        child: ClipOval(
-          child: Container(
-            width: 64,
-            height: 64,
-            color: const Color(0xFF0575F3),
+      return SizedBox(
+        width: 72,
+        height: 72,
+        child: Material(
+          elevation: 8.0,
+          shape: const CircleBorder(),
+          shadowColor: const Color(0xFF0575F3).withOpacity(0.42),
+          color: const Color(0xFF0575F3),
+          child: InkWell(
+            onTap: () {
+              print('Icon Pressed!');
+            },
+            customBorder: const CircleBorder(),
+            splashColor: Colors.white.withOpacity(0.3),
             child: Center(
               child: SvgPicture.asset(
                 AppIcons.addIcon,
