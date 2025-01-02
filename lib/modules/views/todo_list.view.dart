@@ -50,7 +50,10 @@ class TodoListView extends StatelessWidget {
                 AppIcons.addIcon,
                 width: 28,
                 height: 28,
-                color: const Color.fromARGB(255, 255, 255, 255),
+                colorFilter: const ColorFilter.mode(
+                  Color.fromARGB(255, 255, 255, 255),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
