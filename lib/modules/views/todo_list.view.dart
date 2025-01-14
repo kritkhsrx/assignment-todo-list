@@ -7,6 +7,8 @@ import 'package:todo_list/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_list/bloc/todo_list/todo_bloc.dart';
 
+import '../widgets/add_task_modal.dart';
+
 class TodoListView extends StatelessWidget {
   const TodoListView({super.key});
 
@@ -24,7 +26,7 @@ class TodoListView extends StatelessWidget {
                 child: _buildBody(context, state),
               ),
             ),
-            floatingActionButton: _buildFloatingActionButton(state),
+            floatingActionButton: _buildFloatingActionButton(context, state),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           );
         },
@@ -65,7 +67,7 @@ class TodoListView extends StatelessWidget {
     }
   }
 
-  Widget _buildFloatingActionButton(TodoState state) {
+  Widget _buildFloatingActionButton(BuildContext context, TodoState state) {
     if (state is TodoLoading || state is TodoInitial) {
       return const SizedBox.shrink();
     } else {
@@ -79,7 +81,12 @@ class TodoListView extends StatelessWidget {
           color: const Color(0xFF0575F3),
           child: InkWell(
             onTap: () {
-              print('Icon Pressed!');
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) => const AddTaskModal(),
+              );
             },
             customBorder: const CircleBorder(),
             splashColor: Colors.white.withOpacity(0.3),

@@ -72,6 +72,7 @@ class TaskItem extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
+                    fontFamily: 'Montserrat_Normal',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: status == ProgressConstants.done
@@ -86,6 +87,7 @@ class TaskItem extends StatelessWidget {
                 Text(
                   description,
                   style: TextStyle(
+                    fontFamily: 'Montserrat_Normal',
                     fontSize: 14,
                     color: Colors.grey,
                     decoration: status == ProgressConstants.done

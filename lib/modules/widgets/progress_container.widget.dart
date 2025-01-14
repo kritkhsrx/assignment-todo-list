@@ -97,7 +97,7 @@ class ProgressContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '$numberOfTask ${ProgressConstants.taskLabel}',
+            '$numberOfTask ${numberOfTask > 0 ? ProgressConstants.taskLabel : 'TASK'}',
             style: const TextStyle(
               color: Color(0xFF858585),
               fontWeight: FontWeight.w600,
