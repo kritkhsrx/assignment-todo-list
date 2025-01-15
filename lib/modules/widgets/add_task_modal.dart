@@ -1,7 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list/bloc/todo_list/todo_bloc.dart';
+import 'package:todo_list/constants.dart';
 
-class AddTaskModal extends StatelessWidget {
+class AddTaskModal extends StatefulWidget {
   const AddTaskModal({super.key});
+
+  @override
+  State<AddTaskModal> createState() => _AddTaskModalState();
+}
+
+class _AddTaskModalState extends State<AddTaskModal> {
+  final TextEditingController _taskNameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _taskNameController.addListener(_onTaskNameChanged);
+    _descriptionController.addListener(_onDescriptionChanged);
+  }
+
+  @override
+  void dispose() {
+    _taskNameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  void _onTaskNameChanged() {
+    print('Task Name: ${_taskNameController.text}');
+  }
+
+  void _onDescriptionChanged() {
+    print('Description: ${_descriptionController.text}');
+  }
+
+  Future<void> _handleCreateTask() async {
+    if (_taskNameController.text.isEmpty ||
+        _descriptionController.text.isEmpty) {
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Cannot create task with empty fields.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final newTask = {
+      'title': _taskNameController.text,
+      'description': _descriptionController.text,
+      'createdAt': DateTime.now().toIso8601String(),
+      'status': ProgressConstants.active,
+    };
+    //  "title": "Client feedback",
+    // "description": "Gather feedback on the current build",
+    // "createdAt": "2024-12-31T13:30:36",
+    // "status": "done"
+
+    print(newTask);
+    context.read<TodoBloc>().add(AddTodo(newTask));
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +79,7 @@ class AddTaskModal extends StatelessWidget {
         left: 30.0,
         right: 30.0,
         top: 80.0,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 40.0,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 60.0,
       ),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -60,9 +128,10 @@ class AddTaskModal extends StatelessWidget {
   Widget _buildTaskNameField() {
     return Column(
       children: [
-        const TextField(
-          cursorColor: Color(0xFF858585),
-          decoration: InputDecoration(
+        TextField(
+          controller: _taskNameController,
+          cursorColor: const Color(0xFF858585),
+          decoration: const InputDecoration(
             hintText: 'Create a new task',
             hintStyle: TextStyle(
               fontSize: 18.0,
@@ -71,7 +140,7 @@ class AddTaskModal extends StatelessWidget {
             ),
             border: InputBorder.none,
           ),
-          style: TextStyle(
+          style: const TextStyle(
             color: Color.fromARGB(255, 0, 0, 1),
             fontSize: 20.0,
             fontWeight: FontWeight.w500,
@@ -92,9 +161,10 @@ class AddTaskModal extends StatelessWidget {
   Widget _buildDescriptionField() {
     return Column(
       children: [
-        const TextField(
-          cursorColor: Color(0xFF858585),
-          decoration: InputDecoration(
+        TextField(
+          controller: _descriptionController,
+          cursorColor: const Color(0xFF858585),
+          decoration: const InputDecoration(
             hintText: 'Add a description',
             hintStyle: TextStyle(
               fontSize: 18.0,
@@ -103,7 +173,7 @@ class AddTaskModal extends StatelessWidget {
             ),
             border: InputBorder.none,
           ),
-          style: TextStyle(
+          style: const TextStyle(
             color: Color.fromARGB(255, 0, 0, 1),
             fontSize: 20.0,
             fontFamily: 'Montserrat_Normal',
@@ -134,11 +204,12 @@ class AddTaskModal extends StatelessWidget {
               color: const Color(0xFF0575F3).withOpacity(0.43),
               offset: const Offset(0, 5),
               blurRadius: 12,
+              spreadRadius: 0,
             ),
           ],
         ),
         child: ElevatedButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: _handleCreateTask,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,

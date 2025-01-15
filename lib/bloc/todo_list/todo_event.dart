@@ -11,3 +11,8 @@ class UpdateTodoStatusEvent extends TodoEvent {
 
   UpdateTodoStatusEvent(this.index, this.newStatus);
 }
+
+class AddTodo extends TodoEvent {
+  final Map<String, dynamic> todo;
+  AddTodo(this.todo);
+}

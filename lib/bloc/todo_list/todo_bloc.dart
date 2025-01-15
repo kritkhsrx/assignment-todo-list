@@ -11,6 +11,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(TodoInitial()) {
     on<LoadTodosEvent>(_onLoadTodos);
     on<UpdateTodoStatusEvent>(_onUpdateTodoStatus);
+    on<AddTodo>(_onAddTodo);
   }
 
   Future<void> _onLoadTodos(
@@ -39,8 +40,17 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       final updatedTodos = List<Map<String, dynamic>>.from(currentState.todos);
       updatedTodos[event.index]['status'] = event.newStatus;
 
-      TaskSorter.sortTasks(updatedTodos);
+      // TaskSorter.sortTasks(updatedTodos);
 
+      emit(TodoLoaded(updatedTodos));
+    }
+  }
+
+  void _onAddTodo(AddTodo event, Emitter<TodoState> emit) {
+    if (state is TodoLoaded) {
+      final currentState = state as TodoLoaded;
+      final updatedTodos = List<Map<String, dynamic>>.from(currentState.todos)
+        ..add(event.todo);
       emit(TodoLoaded(updatedTodos));
     }
   }

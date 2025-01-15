@@ -14,23 +14,20 @@ class TodoListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TodoBloc()..add(LoadTodosEvent()),
-      child: BlocBuilder<TodoBloc, TodoState>(
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: _buildBody(context, state),
-              ),
+    return BlocBuilder<TodoBloc, TodoState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: _buildBody(context, state),
             ),
-            floatingActionButton: _buildFloatingActionButton(context, state),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          );
-        },
-      ),
+          ),
+          floatingActionButton: _buildFloatingActionButton(context, state),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        );
+      },
     );
   }
 
@@ -85,7 +82,12 @@ class TodoListView extends StatelessWidget {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
-                builder: (context) => const AddTaskModal(),
+                builder: (context) {
+                  return BlocProvider.value(
+                    value: context.read<TodoBloc>(),
+                    child: const AddTaskModal(),
+                  );
+                },
               );
             },
             customBorder: const CircleBorder(),
